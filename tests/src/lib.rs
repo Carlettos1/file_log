@@ -17,7 +17,7 @@ fn test_log_macro() {
 // test the log macro with custom file extension
 #[test]
 fn test_log_macro_with_custom_extension() {
-    file_log::log!("test_log", "log2", "Test log message");
+    file_log::log!("test_log" "log2", "Test log message");
 
     // Verify that the log file was created
     let file_path = format!("test_log_{}.log2", file_log::index());
