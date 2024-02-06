@@ -14,7 +14,7 @@ pub static LOGGER: Lazy<Index> = Lazy::new(Index::default);
 
 #[macro_export]
 macro_rules! log {
-    ($name:tt, $ext:tt, $($arg:tt)*) => {
+    ($name:tt $ext:tt, $($arg:tt)*) => {
         file_log::LOGGER.write_log($name, $ext, format!($($arg)*)).unwrap();
     };
     ($name:tt, $($arg:tt)*) => {
@@ -97,10 +97,10 @@ impl Default for Index {
     fn default() -> Self {
         // Get the index from the env, if it exists, else get it from the index file.
         let mut index = Index::get();
-        // Increment the index
-        index.next();
-        // If the env exists, doesn't make sense to save the index to the index file
+        // If the env var is not set, increase the index and save the index to the index file
         if env::var(FILE_LOG_INDEX_ENV_VAR).is_err() {
+            // Increment the index
+            index.next();
             // Save the index to the index file
             index.save();
         }
