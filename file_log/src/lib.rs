@@ -14,17 +14,18 @@ pub static LOGGER: Lazy<Index> = Lazy::new(Index::default);
 
 #[macro_export]
 macro_rules! log {
-    ($name:tt; $($arg:tt)*) => {
-        file_log::LOGGER.write_log($name, "log", format!($($arg)*)).unwrap();
-    };
-    ($name:tt, $ext:tt; $($arg:tt)*) => {
+    ($name:tt, $ext:tt, $($arg:tt)*) => {
         file_log::LOGGER.write_log($name, $ext, format!($($arg)*)).unwrap();
+    };
+    ($name:tt, $($arg:tt)*) => {
+        file_log::LOGGER.write_log($name, "log", format!($($arg)*)).unwrap();
     };
 }
 
 const INDEX: &str = "log_index";
 const FILE_LOG_INDEX_ENV_VAR: &str = "FILE_LOG_INDEX";
 
+#[doc(hidden)]
 #[derive(Debug)]
 pub struct Index(usize);
 
@@ -104,5 +105,44 @@ impl Default for Index {
             index.save();
         }
         index
+    }
+}
+
+pub fn index() -> usize {
+    LOGGER.index()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_index_next() {
+        let mut index = Index::default();
+        let initial_value = index.index();
+        index.next();
+        assert_eq!(index.index(), initial_value + 1);
+    }
+
+    #[test]
+    fn test_index_write_log() {
+        let index = Index::default();
+        let log_name = "test_log";
+        let extension = "txt";
+        let data = "Test log data";
+        let result = index.write_log(log_name, extension, data);
+        assert!(result.is_ok());
+
+        // Verify that the log file was created
+        let file_path = format!(
+            "{log}_{}.{extension}",
+            index.index(),
+            log = log_name,
+            extension = extension
+        );
+        assert!(fs::metadata(&file_path).is_ok());
+
+        // Clean up the log file
+        fs::remove_file(file_path).unwrap();
     }
 }

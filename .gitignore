@@ -1,1 +1,4 @@
 /target
+log_index
+*.log
+*.log2
