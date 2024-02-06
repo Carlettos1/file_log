@@ -1,2 +1,2 @@
 [workspace]
-members = ["file_log", "tests"]
+members = ["file_log", "tests", "example"]
