@@ -2,3 +2,5 @@
 log_index
 *.log
 *.log2
+*.xyz
+*.csv
