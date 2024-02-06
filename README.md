@@ -38,7 +38,7 @@ The `log_index` file will not be created, and the index in the `file_log::index(
 
 ## Usage
 
-See the brief example at [Example](example/)
+See the brief example at [Example](example/src/main.rs)
 
 -----------------------------
 
