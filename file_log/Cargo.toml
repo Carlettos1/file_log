@@ -1,9 +1,11 @@
 [package]
 name = "file_log"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A library to write logs to files with an index."
 license = "MIT"
+license-file = "../LICENSE"
+readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
